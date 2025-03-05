@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    baseUrl: 'https://sol-academy-mvn-9e06c83dced0.herokuapp.com/'
+    baseUrl: 'http://3.85.164.142:8080/'
 }
