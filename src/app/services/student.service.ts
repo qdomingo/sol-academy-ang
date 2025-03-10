@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Student } from '../models/student.model';
 import { MyTask } from '../models/task.model';
 import { environment } from '../../environments/environment';
+import { Payment } from '../models/payment.model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,8 @@ export class StudentService {
 
   constructor(private http: HttpClient) { }
 
+  // Student services
+  
   getStudentList(): Observable<Student[]> {
     const studentList = this.http.get<Student[]>(`${this.resourceStudentUrl}/getAll`);
     return studentList;
@@ -37,6 +40,8 @@ export class StudentService {
     return this.http.post(`${this.resourceStudentUrl}/deleteStudent`, id);     
   }
 
+  // Task services
+
   createTask(task: MyTask): Observable<any> {    
     return this.http.post(`${this.resourceStudentUrl}/createTask`, task);
   }
@@ -47,6 +52,16 @@ export class StudentService {
 
   deleteTask(id: number): Observable<any> {
     return this.http.post(`${this.resourceStudentUrl}/deleteTask`, id);     
+  }
+
+  // Payment services
+  getPaymentsByStudentId(id: number): Observable<Payment[]> {
+    const paymentList = this.http.get<Payment[]>(`${this.resourceStudentUrl}/getPaymentsByStudentId/${id}`);
+    return paymentList;
+  }
+
+  updatePayment(payment: Payment): Observable<any> {
+    return this.http.post(`${this.resourceStudentUrl}/updatePayment`, payment);
   }
   
 }

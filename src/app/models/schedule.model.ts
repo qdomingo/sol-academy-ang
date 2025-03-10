@@ -3,8 +3,8 @@ export interface Schedule {
     title: string;
     inicio: string;
     fin: string;
-    student_id: number;
-    weekly: number;
+    student_id?: number;
+    weekly?: number;
     serie_id?: number;
     task_id?: number;
     outdated?: boolean;

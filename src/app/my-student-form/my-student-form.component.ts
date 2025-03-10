@@ -41,6 +41,7 @@ export class MyStudentFormComponent implements OnInit {
       nickname: ['', Validators.required],
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
+      rate: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
       comments: ['']
     });
     if (this.route.snapshot.params['id']) {
@@ -59,6 +60,7 @@ export class MyStudentFormComponent implements OnInit {
           name: form.name, 
           email: form.email,
           comments: form.comments,
+          rate: form.rate,
           tasks: []
         }
         this.studentService.updateStudent(student).subscribe(() => {
@@ -73,6 +75,7 @@ export class MyStudentFormComponent implements OnInit {
           name: form.name, 
           email: form.email,
           comments: form.comments,
+          rate: form.rate,
           tasks: []
         }
         this.studentService.addStudent(student).subscribe(() => {

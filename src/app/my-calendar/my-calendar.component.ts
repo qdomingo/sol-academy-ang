@@ -261,8 +261,9 @@ export class MyCalendarComponent implements OnInit {
       title: event.event.title,
       start: new Date(event.event.start).toISOString(),
       end: new Date(event.event.end).toISOString(),
-      student_id: '0', 
-      weekly: '0' // en el update no importan estos 2 valores porque solo hacemos update de las fechas
+      // en el update no importan estos 2 valores porque solo hacemos update de las fechas
+      // student_id: '0', 
+      // weekly: '0'
     }
 
     this.scheduleService.updateSchedule(eventInput).subscribe((response) => {
@@ -318,6 +319,11 @@ export class MyCalendarComponent implements OnInit {
     this.newTaskVisible = false;
   }
 
+  onClickActionGoToPayment() {
+    this.router.navigateByUrl('/studentPayments/' + this.scheduleSelected?.student_id);
+    this.newTaskVisible = false;
+  }
+
   ////////////////// BOTON DE ACCION POP UP DELETE //////////////////
 
   onClickDelete() {
@@ -357,7 +363,7 @@ export class MyCalendarComponent implements OnInit {
   }
 
   saveTask(){
-    if(this.titleTask && this.descriptionTask && this.scheduleSelected) {
+    if(this.titleTask && this.descriptionTask && this.scheduleSelected && this.scheduleSelected.student_id) {
       const task: MyTask = {
         id: 0,
         title: this.titleTask,

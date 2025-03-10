@@ -4,6 +4,7 @@ import { MyStudentsComponent } from './my-students/my-students.component';
 import { MyResourcesComponent } from './my-resources/my-resources.component';
 import { MyStudentFormComponent } from './my-student-form/my-student-form.component';
 import { MyStudentTasksComponent } from './my-student-tasks/my-student-tasks.component';
+import { MyStudentPaymentsComponent } from './my-student-payments/my-student-payments.component';
 
 export const routes: Routes = [
     {
@@ -34,5 +35,9 @@ export const routes: Routes = [
     {
         path: 'studentTasks/:id',
         component: MyStudentTasksComponent,
+    },
+    {
+        path: 'studentPayments/:id',
+        component: MyStudentPaymentsComponent,
     }
 ];

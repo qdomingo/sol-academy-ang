@@ -24,7 +24,10 @@ b { /* used for event dates/times */
 
 .main-app-main {
   flex-grow: 1;
-  padding: 1em;
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-bottom: 1em;
+  padding-top: 0em;
 }
 
 .fc { /* the calendar root */

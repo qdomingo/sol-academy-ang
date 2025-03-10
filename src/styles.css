@@ -15,7 +15,7 @@ body > * { /* the app-root */
 h1 {
   display: block;
   font-size: 2em;
-  margin-top: 0.67em;
+  margin-top: 0;
   margin-bottom: 0.67em;
   margin-left: 0;
   margin-right: 0;

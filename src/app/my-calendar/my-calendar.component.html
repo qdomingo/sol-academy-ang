@@ -75,14 +75,16 @@
     <div *ngIf="scheduleSelected && scheduleSelected.student_id">
       <div class="right">
         <p-button label="Go to Student" icon="pi pi-send" severity="info" (click)="onClickActionGoToStudent()"/>
-      <span class="separacion-lateral"></span> 
+        <span class="separacion-lateral"></span> 
         <p-button label="Add Task" icon="pi pi-save" (click)="onClickActionAddTask()"/>
       </div> 
     </div>
     <div class="separacion"></div>
     <div>
       <div class="right">
-        <p-button label="Delete Schedule" icon="pi pi-trash" (click)="onClickActionDelete()" severity="danger"/>
+        <p-button label="Go to Payment" icon="pi pi-money-bill" severity="warn" (click)="onClickActionGoToPayment()"/>
+        <span class="separacion-lateral"></span> 
+        <p-button label="Delete" icon="pi pi-trash" (click)="onClickActionDelete()" severity="danger"/>
       </div> 
     </div>
   </div>

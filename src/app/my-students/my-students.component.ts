@@ -48,6 +48,10 @@ export class MyStudentsComponent implements OnInit {
     this.router.navigateByUrl('/studentForm/' + id);
   }
 
+  loadStudentPayments(id: number) {
+    this.router.navigateByUrl('/studentPayments/' + id);
+  }
+
   loadStudentTasks(id: number) {
     this.router.navigateByUrl('/studentTasks/' + id);
   }

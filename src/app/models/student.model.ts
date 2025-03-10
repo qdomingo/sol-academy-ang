@@ -7,5 +7,6 @@ export interface Student {
     email: string;
     comments: string;
     tasks: MyTask[];
+    rate?: number;
 };
     

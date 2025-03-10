@@ -44,6 +44,8 @@
                                 <div>
                                     <b>{{ item.name }}</b>
                                     <span class="right">
+                                        <p-button icon="pi pi-money-bill" severity="warn" (click)="loadStudentPayments(item.id)"/>
+                                        <span class="separacion-derecha"></span>
                                         <p-button icon="pi pi-file-edit" severity="info" (click)="loadStudentTasks(item.id)"/>
                                         <span class="separacion-derecha"></span>
                                         <p-button icon="pi pi-user" (click)="updateStudent(item.id)"/>

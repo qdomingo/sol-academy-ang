@@ -42,8 +42,8 @@ export class ScheduleService {
       title: String(event.title),
       inicio: String(event.start), 
       fin: String(event.end),
-      student_id: 0,
-      weekly: 0
+      // student_id: event.student_id,
+      // weekly: event.weekly
     };      
     return this.http.post(`${this.resourceSCheduleUrl}/updateSchedule`, schedule);
   }
