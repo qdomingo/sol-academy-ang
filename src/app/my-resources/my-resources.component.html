@@ -1,1 +1,29 @@
 <h1>My Resources</h1>
+<div class="separacion"></div>
+<h2>Upload Files</h2>
+<p-fileupload
+    #fileUpload
+    customUpload="true"
+    (uploadHandler)="uploadHandler($event)"
+    [multiple]="true"
+    [maxFileSize]="52428800" 
+    mode="advanced"
+>
+</p-fileupload>
+<div *ngIf="activateSpinner" class="card flex justify-center">
+    <p-progress-spinner ariaLabel="loading" />
+</div>
+<div class="separacion"></div>
+<h2>Uploaded Files</h2>
+<div *ngIf="files.length > 0">
+  <ul>
+    <li *ngFor="let file of files">
+        <i [ngClass]="getFileIcon(file.name)"></i>
+        <span class="separacion-derecha"></span>
+        <a [href]="file.url" target="_blank">{{ file.name }}</a>
+        <p-button [text]="true" icon="pi pi-times" severity="danger" (click)="onClickDelete(file.name)"/>
+    </li>
+  </ul>
+</div>
+<p-confirmdialog />
+<p-toast/>

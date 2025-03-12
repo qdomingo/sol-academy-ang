@@ -10,7 +10,7 @@ import { TagModule } from 'primeng/tag';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { DialogModule } from 'primeng/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Schedule } from '../models/schedule.model';
 import { Student } from '../models/student.model';
 import { MyTask } from '../models/task.model';
@@ -33,6 +33,7 @@ import { Select } from 'primeng/select';
 export class MyStudentTasksComponent implements OnInit {
 
     listShcedule: Schedule[] = [];
+    filteredlistShcedule: Schedule[] = [];
     studentList: Student[] = [];
     newTaskVisible = false;
     titleTask: string = '';
@@ -42,7 +43,7 @@ export class MyStudentTasksComponent implements OnInit {
 
     constructor(private scheduleService: ScheduleService, private studentService: StudentService,
       private confirmationService: ConfirmationService, private messageService: MessageService,
-      private route: ActivatedRoute) {}
+      private route: ActivatedRoute, private router: Router) {}
   
     ngOnInit() {
       // this.loadStudent(this.route.snapshot.params['id']);
@@ -139,6 +140,10 @@ export class MyStudentTasksComponent implements OnInit {
 
     onClickCreateTask() {
       this.newTaskVisible = true;
+      // cargar filteredlistShcedule
+      this.filteredlistShcedule = this.listShcedule.filter((schedule) => {
+        return !schedule.task_id; 
+      });
     }
 
     onClickEditTask(item: MyTask) {
@@ -153,6 +158,10 @@ export class MyStudentTasksComponent implements OnInit {
         })
       }
       this.newTaskVisible = true;
+      // cargar filteredlistShcedule
+      this.filteredlistShcedule = this.listShcedule.filter((schedule) => {
+        return !schedule.task_id;
+      })
     }
 
     saveTask() {
@@ -192,7 +201,7 @@ export class MyStudentTasksComponent implements OnInit {
           },
   
           accept: () => {
-            this.deleteTask(item.id);
+            this.deleteTask(item);
           },
           reject: () => {
               // No action
@@ -239,6 +248,7 @@ export class MyStudentTasksComponent implements OnInit {
         console.log('Event created in database', response);
         this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Task Created' });
         this.loadStudent(this.route.snapshot.params['id']);
+        this.loadScheduleList(this.route.snapshot.params['id']);
       }, (error) => {
         console.error('Error creating event in database', error);
       });
@@ -251,6 +261,7 @@ export class MyStudentTasksComponent implements OnInit {
         console.log('Event updated in database', response);
         this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Task Updated' });
         this.loadStudent(this.route.snapshot.params['id']);
+        this.loadScheduleList(this.route.snapshot.params['id']);
       }, (error) => {
         console.error('Error updating event in database', error);
       });
@@ -258,11 +269,15 @@ export class MyStudentTasksComponent implements OnInit {
       this.newTaskVisible = false;
     }
 
-    deleteTask(id: number) {
-      this.studentService.deleteTask(id).subscribe(() => {
+    deleteTask(task: MyTask) {
+      this.studentService.deleteTask(task).subscribe(() => {
         this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Task deleted' });
         this.loadStudent(this.route.snapshot.params['id']);
+        this.loadScheduleList(this.route.snapshot.params['id']);
       });
     }
 
+    back() {
+      this.router.navigateByUrl('/students');
+    }
 }

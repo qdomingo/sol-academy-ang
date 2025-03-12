@@ -5,6 +5,9 @@ import { Student } from '../models/student.model';
 import { MyTask } from '../models/task.model';
 import { environment } from '../../environments/environment';
 import { Payment } from '../models/payment.model';
+import { CacheService } from './cache.service';
+import { tap } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,29 +17,72 @@ export class StudentService {
   baseUrl = environment.baseUrl;
   private resourceStudentUrl = this.baseUrl + 'api/students';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private cacheService: CacheService) { }
+
+  // Student services no cahce
+  
+  // getStudentList(): Observable<Student[]> {
+  //   const studentList = this.http.get<Student[]>(`${this.resourceStudentUrl}/getAll`);
+  //   return studentList;
+  // }
+
+  // getStudentById(id: number): Observable<Student[]> {
+  //   const studentList = this.http.get<Student[]>(`${this.resourceStudentUrl}/getStudentById/${id}`);
+  //   return studentList;
+  // }
+
+  // addStudent(student: Student): Observable<any> {    
+  //   return this.http.post(`${this.resourceStudentUrl}/createStudent`, student);
+  // }
+  
+  // updateStudent(student: Student): Observable<any> {
+  //   return this.http.post(`${this.resourceStudentUrl}/updateStudent`, student);
+  // }
+
+  // deleteStudent(id: number): Observable<any> {
+  //   return this.http.post(`${this.resourceStudentUrl}/deleteStudent`, id);     
+  // }
 
   // Student services
   
   getStudentList(): Observable<Student[]> {
-    const studentList = this.http.get<Student[]>(`${this.resourceStudentUrl}/getAll`);
-    return studentList;
+    const cacheKey = 'studentList';
+    const cachedData = this.cacheService.get(cacheKey);
+    if (cachedData) {
+      return of(cachedData);
+    } else {
+      return this.http.get<Student[]>(`${this.resourceStudentUrl}/getAll`).pipe(
+        tap(data => this.cacheService.set(cacheKey, data))
+      );
+    }
   }
 
   getStudentById(id: number): Observable<Student[]> {
-    const studentList = this.http.get<Student[]>(`${this.resourceStudentUrl}/getStudentById/${id}`);
-    return studentList;
+    const cacheKey = `student_${id}`;
+    const cachedData = this.cacheService.get(cacheKey);
+    if (cachedData) {
+      return of(cachedData);
+    } else {
+      return this.http.get<Student[]>(`${this.resourceStudentUrl}/getStudentById/${id}`).pipe(
+        tap(data => this.cacheService.set(cacheKey, data))
+      );
+    }
   }
 
   addStudent(student: Student): Observable<any> {    
+    this.cacheService.clear('studentList'); // Clear cache on modification
     return this.http.post(`${this.resourceStudentUrl}/createStudent`, student);
   }
   
   updateStudent(student: Student): Observable<any> {
+    this.cacheService.clear('studentList'); // Clear cache on modification
+    this.cacheService.clear(`student_${student.id}`); // Clear cache on modification
     return this.http.post(`${this.resourceStudentUrl}/updateStudent`, student);
   }
 
   deleteStudent(id: number): Observable<any> {
+    this.cacheService.clear('studentList'); // Clear cache on modification
+    this.cacheService.clear(`student_${id}`); // Clear cache on modification
     return this.http.post(`${this.resourceStudentUrl}/deleteStudent`, id);     
   }
 
@@ -50,11 +96,11 @@ export class StudentService {
     return this.http.post(`${this.resourceStudentUrl}/updateTask`, task);
   }
 
-  deleteTask(id: number): Observable<any> {
-    return this.http.post(`${this.resourceStudentUrl}/deleteTask`, id);     
+  deleteTask(task: MyTask): Observable<any> {
+    return this.http.post(`${this.resourceStudentUrl}/deleteTask`, task);     
   }
 
-  // Payment services
+  // Payment services no cache
   getPaymentsByStudentId(id: number): Observable<Payment[]> {
     const paymentList = this.http.get<Payment[]>(`${this.resourceStudentUrl}/getPaymentsByStudentId/${id}`);
     return paymentList;
@@ -63,5 +109,23 @@ export class StudentService {
   updatePayment(payment: Payment): Observable<any> {
     return this.http.post(`${this.resourceStudentUrl}/updatePayment`, payment);
   }
-  
+
+  // Payment services cache
+  // getPaymentsByStudentId(id: number): Observable<Payment[]> {
+  //   const cacheKey = `payments_${id}`;
+  //   const cachedData = this.cacheService.get(cacheKey);
+  //   if (cachedData) {
+  //     return of(cachedData);
+  //   } else {
+  //     return this.http.get<Payment[]>(`${this.resourceStudentUrl}/getPaymentsByStudentId/${id}`).pipe(
+  //       tap(data => this.cacheService.set(cacheKey, data))
+  //     );
+  //   }
+  // }
+
+  // updatePayment(payment: Payment): Observable<any> {
+  //   this.cacheService.clear(`payments_${payment.student_id}`); // Clear cache on modification
+  //   return this.http.post(`${this.resourceStudentUrl}/updatePayment`, payment);
+  // }
+    
 }

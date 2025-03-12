@@ -58,11 +58,14 @@
         <p>Total Hours: <b> {{ studentMonthlyHours }}</b></p>
         <p>Rate: <b> {{ rate | decimalFormat }} €</b></p>
         <p>Classes Paid: <b> {{ studentMonthlyClassesPaid }}</b></p>
-        <p>Classes Done: <b> {{ studentClassesDone }}</b></p>
+        <p>Classes Done: <b> {{ studentClassesDone - studentMonthlyClassesPaid > 0 ? 
+            studentClassesDone - studentMonthlyClassesPaid : 0}}</b></p>
         <p>Total of hours done: <b> {{ studentHoursDone }} </b></p>
-        <p>Amount Receivable: <b> {{ studentHoursDone * rate | decimalFormat }} €</b></p>
+        <p>Amount Receivable: <b> {{ (studentHoursDone * rate - studentMonthlyAmountPaid) | decimalFormat }} €</b></p>
         <p>Amount Received: <b> {{ studentMonthlyAmountPaid | decimalFormat }} €</b></p>
-    </div>
+        <div class="separacion"></div>
+        <p-button label="Back" icon="pi pi-caret-left" (click)="back()"/>
+    </div>   
 </div>
 <p-toast />
 

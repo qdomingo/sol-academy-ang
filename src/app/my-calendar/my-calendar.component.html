@@ -82,7 +82,7 @@
     <div class="separacion"></div>
     <div>
       <div class="right">
-        <p-button label="Go to Payment" icon="pi pi-money-bill" severity="warn" (click)="onClickActionGoToPayment()"/>
+        <p-button *ngIf="scheduleSelected && scheduleSelected.student_id" label="Go to Payment" icon="pi pi-money-bill" severity="warn" (click)="onClickActionGoToPayment()"/>
         <span class="separacion-lateral"></span> 
         <p-button label="Delete" icon="pi pi-trash" (click)="onClickActionDelete()" severity="danger"/>
       </div> 

@@ -7,12 +7,14 @@ import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { Student } from '../models/student.model';
 import { Payment } from '../models/payment.model';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { Select } from 'primeng/select';
 import { PipesModule } from '../pipes/pipes.modules';
+
 
 @Component({
   selector: 'app-my-student-payments',
@@ -65,7 +67,7 @@ export class MyStudentPaymentsComponent implements OnInit {
     ];
 
     constructor(private studentService: StudentService, private messageService: MessageService,
-      private route: ActivatedRoute) {}
+      private route: ActivatedRoute, private router: Router ) {}
   
     ngOnInit() {
       this.loadStudent(this.route.snapshot.params['id']);
@@ -114,7 +116,6 @@ export class MyStudentPaymentsComponent implements OnInit {
         // this.loadStudent(this.route.snapshot.params['id']);
         // llamamamos a los metodos para calcular los valores de los pagos
         this.filterPaymentsByMonth();
-        this.totalPayments();
         this.rate = this.paymentsList[0].rate;
       });
     }
@@ -165,39 +166,7 @@ export class MyStudentPaymentsComponent implements OnInit {
       this.studentHoursDone = this.studHoursDone();
     }
 
-    totalPayments() {
-      // this.studentTotClasses = this.paymentsList.length;
-      // this.studentTotClassesPaid = this.studentTotalClassesPaid();
-      // this.studentTotHours = this.studentTotalHours();
-      // this.studentTotalAmount = this.studentTotHours*this.paymentsList[0].rate;
-      // this.studentTotalAmountPaid = this.studentTotalPaid();
-    }
 
-    // studentTotalPaid() {
-    //   return this.paymentsList.reduce((acc, payment) => {
-    //     if(payment.paid) {
-    //       return acc + payment.rate * payment.duration/60;
-    //     } else {
-    //       return acc;
-    //     }
-    //   }, 0);
-    // }
-
-    // studentTotalClassesPaid() {
-    //   return this.paymentsList.reduce((acc, payment) => {
-    //     if(payment.paid) {
-    //       return acc + 1;
-    //     } else {
-    //       return acc;
-    //     }
-    //   }, 0);
-    // }
-
-    // studentTotalHours() {
-    //   return this.paymentsList.reduce((acc, payment) => {
-    //       return acc + payment.duration/60
-    //   }, 0);
-    // }
 
     studentMonthPaid() {
       return this.filteredPaymentsList.reduce((acc, payment) => {
@@ -250,6 +219,10 @@ export class MyStudentPaymentsComponent implements OnInit {
         payment.paid = 1;
         this.updatePayment(payment);
       });
+    }
+
+    back() {
+      this.router.navigateByUrl('/students');
     }
 
 }

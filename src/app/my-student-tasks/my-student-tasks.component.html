@@ -3,6 +3,7 @@
 <div class="grid grid-cols-2 gap-12" #inicio>
     <div>
         <h2 *ngIf="studentList[0]">{{ studentList[0].name }} 's Classes</h2>
+        <span class="right"><p-button label="Back" icon="pi pi-caret-left" (click)="back()"/></span>
         <div class="separacion"></div>
         <div>
             <p-dataview #dv [value]="listShcedule" [rows]="6" [paginator]="true">
@@ -76,7 +77,7 @@
   </div>
   <div class="separacion"></div>
   <div class="flex flex-col">
-    <p-select [appendTo]="inicio" [options]="listShcedule" [(ngModel)]="selectedSchedule" optionLabel="inicio" 
+    <p-select [appendTo]="inicio" [options]="filteredlistShcedule" [(ngModel)]="selectedSchedule" optionLabel="inicio" 
     placeholder="Select a Schedule" class="w-full" (onChange)="onChangeSelectSchedule()" />
   </div>
   <div class="separacion"></div>
