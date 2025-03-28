@@ -1,0 +1,62 @@
+<h1>My Tasks</h1>
+<div class="separacion"></div>
+<div class="grid grid-cols-2 gap-12" #inicio>
+    <div>
+        <span><p-button label="Add Task" icon="pi pi-plus" (click)="onClickCreateTask()"/></span>
+        <div class="separacion"></div>
+        <div *ngIf="studentList[0]">
+            <p-dataview #dv2 [value]="studentList[0].tasks" [rows]="5" [paginator]="true">
+                <ng-template #list let-items>
+                            <div *ngFor="let item of items">
+                                <div class="my-class-card">
+                                    <div>
+                                        <div>
+                                            <p-button *ngIf="item.confirmed === 1" [text]="true" icon="pi pi-check" 
+                                            (click)="onClickChangeTask(item)"/>
+                                            <p-button *ngIf="item.confirmed === 0" [text]="true" icon="pi pi-times" severity="warn" 
+                                            (click)="onClickChangeTask(item)"/>
+                                            <span class="separacion-derecha"></span>
+                                            <b class="title">{{ item.title }}</b> 
+
+                                            <span class="right">
+                                                <p-button icon="pi pi-file-edit" severity="info" (click)="onClickEditTask(item)"/>
+                                                <span class="separacion-derecha"></span>
+                                                <p-button icon="pi pi-trash" severity="danger" (click)="onClickDeleteTask(item)"/>
+                                            </span>
+                                        </div>
+                                        <!-- <div>
+                                            {{ item.description}} 
+                                        </div>   -->
+                                        <div [innerHTML]="item.description | newlineToBr">
+                                        </div>                        
+                                    </div>
+                                </div>
+                            </div>
+                </ng-template>
+            </p-dataview>
+        </div>    
+    </div>
+    <div>
+        <!-- Nada aqui, la dejamos en blanco para poner algo en el futuro si se necesita -->
+    </div>
+</div>
+<p-confirmdialog />
+<p-toast />
+
+<p-dialog position="top" header="Task" [(visible)]="newTaskVisible" [style]="{ width: '35rem' }"
+(onHide)="onHide()" [modal]="true">
+  <div class="flex flex-col" >
+    <label for="title" class="mb-2">Please enter a title for your task</label>
+    <input id="title" type="text" [(ngModel)]="titleTask" pInputText class="p-inputtext p-component" />
+  </div>
+  <div class="separacion"></div>
+  <div class="flex flex-col" >
+    <label for="title" class="mb-2">Please enter a description for your task</label>
+    <textarea id="comments" type="textarea" pTextarea rows="6" [(ngModel)]="descriptionTask" class="p-textarea p-component"></textarea>
+  </div>
+  <div class="separacion"></div>
+  <div class="right">
+    <p-button label="Save Task" icon="pi pi-save" (click)="saveTask()"/>
+  </div> 
+</p-dialog>
+

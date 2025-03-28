@@ -1,0 +1,45 @@
+<h1 *ngIf="studentList && studentList.length !== 1">My Resources</h1>
+<h1 *ngIf="studentList && studentList.length === 1">{{ studentList[0].name }}'s Resources</h1>
+<div class="separacion"></div>
+<h2>Upload Files</h2>
+<div class="grid grid-cols-2 gap-12">
+  <div>
+    <p-fileupload
+        #fileUpload
+        customUpload="true"
+        (uploadHandler)="uploadHandler($event)"
+        [multiple]="true"
+        [maxFileSize]="52428800" 
+        mode="advanced"
+    >
+    </p-fileupload>
+  </div>
+  <div>
+    <input type="text" [(ngModel)]="folderPath" placeholder="Enter folder path" />
+    <span class="separacion-derecha"></span>
+    <p-button icon="pi pi-folder" label="Create Folder" (click)="createFolder()" [disabled] = "folderPath.length === 0"/>
+  </div>
+</div>
+<div *ngIf="activateSpinner" class="card flex justify-center">
+      <p-progress-spinner ariaLabel="loading" />
+</div>
+<div class="separacion"></div>
+<div *ngIf="studentList && studentList.length === 1">
+      <p-button label="Back" icon="pi pi-caret-left" (click)="back()"/>
+</div>
+<div *ngIf="studentList && studentList.length !== 1">
+      <p-selectbutton [options]="stateOptions" [(ngModel)]="value" optionLabel="label" 
+      optionValue="value" (onChange) = "onChangeSelectButton()"/>
+</div>
+<div class="separacion"></div>
+<h2>Uploaded Files</h2>
+<p-tree [value]="filesTree" selectionMode="single" [(selection)]="selectedFile" (onNodeSelect)="onNodeSelect($event)">
+  <ng-template let-node pTemplate="default">
+      <p-button *ngIf="node.data" [text]="true" label="{{ node.label }}" (click)="onClickOpen(node)"></p-button>
+      <span *ngIf="!node.data">{{ node.label }}</span>
+      <p-button *ngIf="node.data && node.key.length > 2" [text]="true" icon="pi pi-times" severity="danger" (click)="onClickDelete(node.key)"></p-button>
+      <p-button *ngIf="!node.data && node.key.length > 2" [text]="true" icon="pi pi-times" severity="danger" (click)="onClickDeleteFolder(node.key)"></p-button>
+  </ng-template>
+</p-tree>
+<p-confirmdialog />
+<p-toast/>

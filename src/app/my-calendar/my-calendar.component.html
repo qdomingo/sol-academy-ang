@@ -1,0 +1,176 @@
+<div class="grid grid-cols-2 gap-4 items-center" #inicio>
+  <div>
+    <h1><span class ="notmargin">My Schedule</span></h1>
+  </div>
+  <div>
+  <div class="right">
+    <p-button label="Info" severity="info" (click)="infoVisible = !infoVisible" />
+    <p-dialog header="Instructions" [(visible)]="infoVisible" [style]="{ width: '35rem' }">
+        <ul>
+            <li>Select dates and you will be prompted to create a new event</li>
+            <li>Drag, drop, and resize events</li>
+            <li>Click an event to edit it</li>
+          </ul>
+    </p-dialog>
+    <span class="separacion-lateral"></span>
+    <label>
+        <input
+          type='checkbox'
+          [checked]='calendarOptions().weekends'
+          (change)='handleWeekendsToggle()'
+        />
+        Show weekends
+    </label>
+  </div>
+</div>
+</div>
+<div class='my-calendar'> 
+    <div class='my-calendar-main'>  
+      <full-calendar [options]='calendarOptions()'>
+        <ng-template #eventContent let-arg>
+          <b>{{ arg.timeText }}</b>
+          <i>{{ arg.event.title }}</i>
+          <span *ngIf="arg.view.type === 'listWeek' && arg.event.extendedProps.task_id">
+            <span class="separacion-lateral"></span>
+            <p-tag *ngIf="arg.event.extendedProps.task_confirmed === 0" value="{{ arg.event.extendedProps.task_title }}" severity="warn" pTooltip="{{ arg.event.extendedProps.task_description }}"/>
+            <p-tag *ngIf="arg.event.extendedProps.task_confirmed === 1" value="{{ arg.event.extendedProps.task_title }}" severity="info" pTooltip="{{ arg.event.extendedProps.task_description }}"/>
+          
+          </span>
+        </ng-template>
+      </full-calendar>
+    </div>
+</div>
+<!-- <p-confirmdialog /> -->
+
+<!-- POP UP NEW SCHEDULE -->
+<p-dialog position="top" header="New Schedule" [(visible)]="newScheduleVisible" [style]="{ width: '35rem' }"
+(onHide)="onHide()" [modal]="true">
+  <div class="flex flex-col" >
+    <label for="title" class="mb-2">Please enter a new title for your event</label>
+    <input id="title" type="text" [(ngModel)]="titleSchedule" pInputText class="p-inputtext p-component" />
+  </div>
+  <div class="flex flex-col separacion">
+    <label for="title2" class="mb-2">Select a student if you want to associate the schedule</label>
+    <div class="grid grid-cols-2 gap-4 items-center">
+      <div class="flex gap-1">
+        <p-select [appendTo]="inicio" [options]="studentList" [(ngModel)]="selectedStudent" optionLabel="name" 
+        placeholder="Select a Student" class="w-full md:w-56" (onChange)="onChangeSelectButton()" />
+      </div>
+      <div class="right">
+        <p-button label="Add Schedule" icon="pi pi-save" (click)="saveSchedule()"/>
+      </div> 
+    <div>
+      <p-checkbox [(ngModel)]="weeklyChecked" [binary]="true" inputId="weekly" />
+      <label for="weekly" class="ml-2">Weekly</label>
+    </div>
+  </div>
+  </div>
+</p-dialog>
+
+<!-- POP UP SELECCIONAR ACCIONES -->
+<p-dialog position="top" header="Schedule Action" [(visible)]="actionScheduleVisible" [style]="{ width: '25rem' }"
+(onHide)="onHide3()" [modal]="true">
+  <div class="flex flex-col">
+    <label for="title2" class="mb-2">What do you want to do?</label>
+    <div class="separacion"></div>
+    <div>
+      <div class="right">
+        <p-button label="Modify Schedule Title" icon="pi pi-save" (click)="onClickActionModifySchedule()"/>
+        <span class="separacion-lateral"></span> 
+        <p-button label="Delete" icon="pi pi-trash" (click)="onClickActionDelete()" severity="danger"/>
+      </div>
+    </div>
+    <div class="separacion"></div>
+    <div *ngIf="scheduleSelected && scheduleSelected.student_id">
+      <div class="right">
+        <p-button label="Go to Student" icon="pi pi-send" severity="info" (click)="onClickActionGoToStudent()"/>
+        <span class="separacion-lateral"></span>
+        <p-button label="Go to Payment" icon="pi pi-money-bill" severity="warn" (click)="onClickActionGoToPayment()"/>
+      </div> 
+    </div>
+    <div class="separacion"></div>
+    <div>
+      <div class="right">
+        <p-button *ngIf="scheduleSelected && scheduleSelected.student_id" label="Add/Edit Task" icon="pi pi-save" (click)="onClickActionAddTask()"/>
+      </div> 
+    </div>
+  </div>
+</p-dialog>
+
+<!-- POP UP DELETE SCHEDULE -->
+<p-dialog position="top" header="Delete Schedule" [(visible)]="deleteScheduleVisible" [style]="{ width: '25rem' }"
+(onHide)="onHide2()" [modal]="true">
+  <div class="flex flex-col">
+    <label for="title2" class="mb-2">Do you want to delete the schedule?</label>
+    <div class="separacion"></div>
+    <div class="grid grid-cols-2 gap-4 items-center">
+      <div class="right">
+        <p-button label="Delete Schedule" icon="pi pi-trash" (click)="onClickDelete()" severity="danger"/>
+      </div> 
+      <div *ngIf="scheduleToDelete && scheduleToDelete.weekly === 1">
+        <p-checkbox [(ngModel)]="deleteWeeklyChecked" [binary]="true" inputId="deleteWeekly" />
+        <label for="weekly" class="ml-2">Delete Weekly</label>
+      </div>
+    </div>
+  </div>
+</p-dialog>
+
+<!-- POP UP MODIFY SCHEDULE -->
+<p-dialog position="top" header="Modify Schedule" [(visible)]="modifyScheduleTimeVisible" [style]="{ width: '25rem' }"
+(onHide)="onHide1()" [modal]="true">
+  <div class="flex flex-col">
+    <label for="title2" class="mb-2">Do you want to modify the schedule?</label>
+    <div class="separacion"></div>
+    <div class="grid grid-cols-2 gap-4 items-center">
+      <div class="right">
+        <p-button label="Modify Schedule" icon="pi pi-save" (click)="onClickModifyScheduleTime()"/>
+      </div> 
+      <div *ngIf="scheduleToModify && scheduleToModify.weekly === 1">
+        <p-checkbox [(ngModel)]="modifyWeeklyChecked" [binary]="true" inputId="modifyWeekly" />
+        <label for="weekly" class="ml-2">Modify Weekly</label>
+      </div>
+    </div>
+  </div>
+</p-dialog>
+
+<!-- POP UP MODIFY SCHEDULE TITLE -->
+<p-dialog position="top" header="Modify Schedule Title" [(visible)]="modifyScheduleVisible" [style]="{ width: '35rem' }"
+(onHide)="onHide5()" [modal]="true">
+  <div class="flex flex-col" >
+    <label for="title" class="mb-2">Please enter a new title for your event</label>
+    <input id="title" type="text" [(ngModel)]="titleSchedule" pInputText class="p-inputtext p-component" />
+  </div>
+  <div class="separacion"></div>
+  <div>
+    <p-button label="Modify Schedule" icon="pi pi-save" (click)="modifyScheduleTitle()"/>
+  </div> 
+  <div class="separacion"></div>
+  <div *ngIf="scheduleToModify && scheduleToModify.weekly === 1">
+    <p-checkbox [(ngModel)]="modifyWeeklyChecked" [binary]="true" inputId="weekly" />
+    <label for="weekly" class="ml-2">Weekly</label>
+  </div>
+</p-dialog>
+
+<!-- POP UP ADD TASK -->
+<p-dialog position="top" header="Task" [(visible)]="newTaskVisible" [style]="{ width: '35rem' }"
+(onHide)="onHide4()" [modal]="true">
+  <div class="flex flex-col" >
+    <label for="title" class="mb-2">Please enter a title for your task</label>
+    <input id="title" type="text" [(ngModel)]="titleTask" pInputText class="p-inputtext p-component" />
+  </div>
+  <div class="separacion"></div>
+  <div class="flex flex-col">
+    <p-select [appendTo]="inicio" [options]="listShcedule" [(ngModel)]="scheduleSelected" optionLabel="inicio" 
+    placeholder="Select a Schedule" class="w-full" [disabled]="true" />
+  </div>
+  <div class="separacion"></div>
+  <div class="flex flex-col" >
+    <label for="title" class="mb-2">Please enter a description for your task</label>
+    <textarea id="comments" type="textarea" pTextarea rows="6" [(ngModel)]="descriptionTask" class="p-textarea p-component"></textarea>
+  </div>
+  <div class="separacion"></div>
+  <div class="right">
+    <p-button label="Save Task" icon="pi pi-save" (click)="saveTask()"/>
+  </div> 
+</p-dialog>
+  

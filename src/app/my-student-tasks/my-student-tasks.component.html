@@ -1,0 +1,124 @@
+<h1>My Student Classes and Tasks</h1>
+<div class="separacion"></div>
+<div class="grid grid-cols-2 gap-12" #inicio>
+    <div>
+        <h2 *ngIf="studentList[0]">{{ studentList[0].name }} 's Classes</h2>
+        <span class="right"><p-button label="Back" icon="pi pi-caret-left" (click)="back()"/></span>
+        <div class="separacion"></div>
+        <div>
+            <p-select [appendTo]="inicio" [options]="months" [(ngModel)]="selectedMonth" class="w-full" (onChange)="filterClassesyByMonth()"/>
+            <div class="separacion"></div>
+            <p-dataview #dv [value]="filteredClassShcedule" [rows]="5" [paginator]="true">
+                <ng-template #list let-items>
+                            <div *ngFor="let item of items">
+                                <div class="my-class-card">
+                                    <div>
+                                        <div>
+                                            <b>{{ item.title }}</b>
+                                            <span class="right">
+                                                <p-tag *ngIf="item.outdated" value="Old" severity="warn" />
+                                                <p-tag *ngIf="!item.outdated" value="New" />
+                                                <span class="separacion-derecha"></span>
+                                                <p-button icon="pi pi-trash" severity="danger" (click)="onClickDeleteSchedule(item.id)"/>
+                                            </span>
+                                        </div>
+                                        <div>
+                                            {{ item.inicio }} - {{ item.fin }} 
+                                        </div>                        
+                                    </div>
+                                </div>
+                            </div>
+                </ng-template>
+            </p-dataview>
+        </div>
+    </div>
+    <div>
+        <h2 *ngIf="studentList[0]">{{ studentList[0].name }} 's Tasks</h2>
+        <span class="right"><p-button label="Add Task" icon="pi pi-plus" (click)="onClickCreateTask()"/></span>
+        <div class="separacion"></div>
+        <div *ngIf="studentList[0]">
+            <p-dataview #dv2 [value]="studentList[0].tasks" [rows]="5" [paginator]="true">
+                <ng-template #list let-items>
+                            <div *ngFor="let item of items">
+                                <div class="my-class-card">
+                                    <div>
+                                        <div>
+                                            <p-button *ngIf="item.confirmed === 1" [text]="true" icon="pi pi-check" 
+                                            (click)="onClickChangeTask(item)"/>
+                                            <p-button *ngIf="item.confirmed === 0" [text]="true" icon="pi pi-times" severity="warn" 
+                                            (click)="onClickChangeTask(item)"/>
+                                            <span class="separacion-derecha"></span>
+                                            <b class="title">{{ item.title }}</b> 
+                                            <span class="separacion-lateral"></span>
+                                            <p-tag *ngIf="item.schedule_date" value="{{ item.schedule_date }}" severity="info" />
+
+                                            <span class="right">
+                                                <p-button icon="pi pi-file-edit" severity="info" (click)="onClickEditTask(item)"/>
+                                                <span class="separacion-derecha"></span>
+                                                <p-button icon="pi pi-trash" severity="danger" (click)="onClickDeleteTask(item)"/>
+                                            </span>
+                                        </div>
+                                        <!-- <div>
+                                            {{ item.description}} 
+                                        </div>   -->
+                                        <div [innerHTML]="item.description | newlineToBr">
+                                        </div>                        
+                                    </div>
+                                </div>
+                            </div>
+                </ng-template>
+            </p-dataview>
+        </div>
+    </div>
+</div>
+<p-confirmdialog />
+<p-toast />
+<p-dialog position="top" header="Task" [(visible)]="newTaskVisible" [style]="{ width: '35rem' }"
+(onHide)="onHide()" [modal]="true">
+  <div class="flex flex-col" >
+    <label for="title" class="mb-2">Please enter a title for your task</label>
+    <input id="title" type="text" [(ngModel)]="titleTask" pInputText class="p-inputtext p-component" />
+  </div>
+  <!-- Campos opcionales de grammar, reading, vocabulary, spelling, speaking -->
+  <div class="separacion"></div>
+  <div class="flex flex-col" >
+    <label for="title" class="mb-2">1.</label>
+    <input id="title" type="text" [(ngModel)]="first" pInputText class="p-inputtext p-component" />
+  </div>
+  <div class="separacion"></div>
+  <div class="flex flex-col" >
+    <label for="title" class="mb-2">2.</label>
+    <input id="title" type="text" [(ngModel)]="second" pInputText class="p-inputtext p-component" />
+  </div>
+  <div class="separacion"></div>
+  <div class="flex flex-col" >
+    <label for="title" class="mb-2">3.</label>
+    <input id="title" type="text" [(ngModel)]="third" pInputText class="p-inputtext p-component" />
+  </div>
+  <div class="separacion"></div>
+  <div class="flex flex-col" >
+    <label for="title" class="mb-2">4.</label>
+    <input id="title" type="text" [(ngModel)]="fourth" pInputText class="p-inputtext p-component" />
+  </div>
+  <div class="separacion"></div>
+  <div class="flex flex-col" >
+    <label for="title" class="mb-2">5.</label>
+    <input id="title" type="text" [(ngModel)]="fifth" pInputText class="p-inputtext p-component" />
+  </div>
+    <!-- Fin Campos opcionales de grammar, reading, vocabulary, spelling, speaking -->
+  <div class="separacion"></div>
+  <div class="flex flex-col">
+    <p-select [appendTo]="inicio" [options]="filteredlistShcedule" [(ngModel)]="selectedSchedule" optionLabel="inicio" 
+    placeholder="Select a Schedule" class="w-full" (onChange)="onChangeSelectSchedule()" />
+  </div>
+  <div class="separacion"></div>
+  <div class="flex flex-col" >
+    <label for="title" class="mb-2">Please enter a description for your task</label>
+    <textarea id="comments" type="textarea" pTextarea rows="6" [(ngModel)]="descriptionTask" class="p-textarea p-component"></textarea>
+  </div>
+  <div class="separacion"></div>
+  <div class="right">
+    <p-button label="Save Task" icon="pi pi-save" (click)="saveTask()"/>
+  </div> 
+</p-dialog>
+

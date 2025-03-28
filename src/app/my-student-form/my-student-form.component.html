@@ -1,0 +1,29 @@
+<h1>Student</h1>
+<div>
+        <form [formGroup]="studentForm" (ngSubmit)="onSubmit()" class="space-y-4">
+          <div class="flex flex-col">
+            <label for="nickname" class="mb-2">Platform</label>
+            <input id="nickname" type="text" pInputText formControlName="nickname" class="p-inputtext p-component" />
+          </div>
+          <div class="flex flex-col">
+            <label for="name" class="mb-2">Name</label>
+            <input id="name" type="text" pInputText formControlName="name" class="p-inputtext p-component" />
+          </div>
+          <div class="flex flex-col">
+            <label for="email" class="mb-2">Email</label>
+            <input id="email" type="email" pInputText formControlName="email" class="p-inputtext p-component" />
+          </div>
+          <div class="flex flex-col">
+            <label for="rate" class="mb-2">Rate</label>
+            <input id="rate" type="text" pInputText formControlName="rate" class="p-inputtext p-component" />
+          </div>
+          <div class="flex flex-col">
+            <label for="comments" class="mb-2">Comments</label>
+            <textarea id="comments" pTextarea formControlName="comments" class="p-textarea p-component"></textarea>
+          </div>
+          <button type="submit" pButton label="Submit" class="p-button p-component"></button>
+          <span class="separacion-lateral"></span>
+          <p-button label="Back" icon="pi pi-caret-left" (click)="back()"/>
+        </form>
+</div>
+<p-toast />

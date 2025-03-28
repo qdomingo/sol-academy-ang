@@ -1,0 +1,19 @@
+<div class="login-container">
+    <h1>Login</h1>
+    <form [formGroup]="loginForm" (ngSubmit)="login()" class="space-y-4">
+      <div class="flex flex-col">
+        <label for="username" class="mb-2">Username</label>
+        <input id="username" type="text" pInputText formControlName="username" class="p-inputtext p-component" />
+      </div>
+      <div class="flex flex-col">
+        <label for="password" class="mb-2">Password</label>
+        <input id="password" type="text" pInputText formControlName="password" class="p-inputtext p-component" />
+      </div>
+      <button type="submit" pButton label="Submit" class="p-button p-component"></button>
+      <span class="separacion-lateral"></span>
+      <p-button label="Log Out" icon="pi pi-times" severity="danger" (click)="logout()"/>
+    </form>
+
+  </div>
+  <p-toast/>
+

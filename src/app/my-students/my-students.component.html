@@ -1,0 +1,66 @@
+<h1>My Students</h1>
+<div>
+    <p-button label="Add Student" icon="pi pi-plus" (click)="addStudent()"/>
+    <span class="separacion-derecha"></span>
+    <p-selectbutton [options]="stateOptions" [(ngModel)]="value" optionLabel="label" optionValue="value"/>
+    <span *ngIf="studentList"class="right"><h2>Students: {{ studentList.length }} </h2></span>
+</div>
+<div class="separacion"></div>
+<div *ngIf="value === 'expanded'">
+    <p-dataview #dv [value]="studentList" [rows]="4" [paginator]="true">
+        <ng-template #list let-items>
+                <div class="grid grid-cols-2 gap-4">
+                    <div *ngFor="let item of items">
+                        <div class="mycard">
+                            <div>
+                                <div>
+                                    <b>{{ item.name }}</b>
+                                    <span class="right">
+                                        <p-button icon="pi pi-file-edit" severity="info" (click)="loadStudentTasks(item.id)"/>
+                                        <span class="separacion-derecha"></span>
+                                        <p-button icon="pi pi-user" (click)="updateStudent(item.id)"/>
+                                    </span>
+                                </div>
+                                <div>
+                                    {{ item.nickname }}
+                                </div>                        
+                                <div>
+                                    {{ item.email }}<span class="right"><p-button icon="pi pi-trash" severity="danger"
+                                        (click)="confirm($event, item.id)"/></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </ng-template>
+    </p-dataview>
+</div>
+<div *ngIf="value === 'list'">
+    <p-dataview #dv2 [value]="studentList" [rows]="20" [paginator]="true">
+        <ng-template #list let-items>
+                    <div *ngFor="let item of items">
+                        <div class="mycard-redux">
+                            <div>
+                                <div>
+                                    <b>{{ item.name }}</b>
+                                    <span class="right">
+                                        <p-button icon="pi pi-folder-open" severity="help" (click)="loadStudentResources(item.id)"/>
+                                        <span class="separacion-derecha"></span>
+                                        <p-button icon="pi pi-money-bill" severity="warn" (click)="loadStudentPayments(item.id)"/>
+                                        <span class="separacion-derecha"></span>
+                                        <p-button icon="pi pi-file-edit" severity="info" (click)="loadStudentTasks(item.id)"/>
+                                        <span class="separacion-derecha"></span>
+                                        <p-button icon="pi pi-user" (click)="updateStudent(item.id)"/>
+                                        <span class="separacion-derecha"></span>
+                                        <p-button icon="pi pi-trash" severity="danger"
+                                        (click)="confirm($event, item.id)"/>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        </ng-template>
+    </p-dataview>
+</div>
+<p-toast />
+<p-confirmdialog />

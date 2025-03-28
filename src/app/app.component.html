@@ -1,0 +1,17 @@
+
+<div class='main-app'>
+  <div class='main-app-sidebar'>
+    <div class='main-app-sidebar-header'>
+      <img src='../../assets/logombq3.png' alt='Logo' class='logo'/>
+    </div>
+    <div class='main-app-sidebar-section'>
+      <p-panelmenu [model]="itemsMenu" styleClass="w-full md:w-20rem" />
+    </div>  
+  </div>
+
+  <div class='main-app-main'>
+    <router-outlet></router-outlet>
+  </div>
+</div>
+
+

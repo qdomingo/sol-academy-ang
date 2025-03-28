@@ -1,0 +1,78 @@
+@import "primeicons/primeicons.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+body > * { /* the app-root */
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+h1 {
+  display: block;
+  font-size: 2em;
+  margin-top: 0;
+  margin-bottom: 0.67em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+}
+
+h2 {
+  display: inline-block;
+  font-size: 1.33em;
+  margin-top: 0.33em;
+  margin-bottom: 0.33em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+}
+
+.notmargin{
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.right{
+  float: right;
+}
+
+.separacion {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.separacion-lateral {
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+}
+
+.separacion-derecha {
+  margin-right: 0.5em;
+}
+
+.p-tooltip .p-tooltip-text {
+  background-color: white !important;
+  color: black !important;
+  width: 300px !important;
+  word-wrap: break-word !important;
+}
+
+.main-app-sidebar-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 240px; /* Ajusta la altura del contenedor según sea necesario */
+}
+
+.main-app-sidebar-header .logo {
+  width: 240px;
+  height: 240px;
+  object-fit: contain; /* Ajusta la imagen dentro del contenedor sin distorsionarla */
+}

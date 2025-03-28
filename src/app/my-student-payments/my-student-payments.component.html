@@ -1,0 +1,72 @@
+<h1>My Student Payments</h1>
+<div class="separacion"></div>
+<div class="grid grid-cols-2 gap-12" #inicio>
+    <div>
+        <h2 *ngIf="studentList[0]">{{ studentList[0].name }} 's Payments - {{ selectedMonth | monthName }}</h2>
+        <span class="right">
+            <p-button label="All" [text]="true" icon="pi pi-check" (click)="onClickChangeAllPaid()"/>
+            <span class="separacion-lateral"></span>
+            <p-button label="All" [text]="true" icon="pi pi-times" severity="warn" (click)="onClickChangeAllUnpaid()"/>
+        </span>
+        <div class="separacion"></div>
+        <div>
+            <p-select [appendTo]="inicio" [options]="months" [(ngModel)]="selectedMonth" class="w-full" (onChange)="filterPaymentsByMonth()"/>
+            <div class="separacion"></div>
+            <p-dataview #dv [value]="filteredPaymentsList" [rows]="5" [paginator]="true">
+                <ng-template #list let-items>
+                            <div *ngFor="let item of items">
+                                <div class="my-class-card">
+                                    <div>
+                                        <div>
+                                            <p-button *ngIf="item.paid === 1" [text]="true" icon="pi pi-check" 
+                                            (click)="onClickChangePayment(item)"/>
+                                            <p-button *ngIf="item.paid === 0" [text]="true" icon="pi pi-times" severity="warn" 
+                                            (click)="onClickChangePayment(item)"/>
+                                            <span class="separacion-derecha"></span>
+                                            <b>{{ item.title }}</b> {{ item.schedule_month | monthName }}
+                                            <span class="right">
+                                                <p-tag *ngIf="item.outdated" value="Old" severity="warn" />
+                                                <p-tag *ngIf="!item.outdated" value="New" />
+                                            </span>
+                                        </div>
+                                        <div>
+                                            {{ item.inicio }} - {{ item.fin }} 
+                                        </div>                        
+                                    </div>
+                                </div>
+                            </div>
+                </ng-template>
+            </p-dataview>
+        </div>
+    </div>
+    <div>
+        <h2 *ngIf="studentList[0]">{{ studentList[0].name }} 's Forecast</h2>
+        <!-- <div>
+            <h2>Total Payments</h2>
+        </div>
+        <p>Total Classes: <b> {{ studentTotClasses }}</b></p>
+        <p>Total Classes Paid: <b> {{ studentTotClassesPaid }}</b></p>
+        <p>Total Hours: <b> {{ studentTotHours }}</b></p>
+        <p>Total Amount Forecast: <b> {{ studentTotalAmount | decimalFormat }} €</b></p>
+        <p>Total Amount Paid: <b> {{ studentTotalAmountPaid | decimalFormat }} €</b></p>
+        <p>Total Amount Pendent: <b> {{ studentTotalAmount - studentTotalAmountPaid | decimalFormat }} €</b></p>
+        -->  
+        <div> 
+        <h2>Month: {{ selectedMonth | monthName }}</h2>
+        </div>
+        <p>Total Classes: <b> {{ studentMonthlyClasses }}</b></p>
+        <p>Total Hours: <b> {{ studentMonthlyHours }}</b></p>
+        <p>Rate: <b> {{ rate | decimalFormat }} €</b></p>
+        <p>Classes Paid: <b> {{ studentMonthlyClassesPaid }}</b></p>
+        <p>Classes Done: <b> {{ studentClassesDone - studentMonthlyClassesPaid > 0 ? 
+            studentClassesDone - studentMonthlyClassesPaid : 0}}</b></p>
+        <p>Total of hours done: <b> {{ studentHoursDone }} </b></p>
+        <p>Amount Receivable: <b> {{ (studentHoursDone * rate - studentMonthlyAmountPaid) | decimalFormat }} €</b></p>
+        <p>Amount Received: <b> {{ studentMonthlyAmountPaid | decimalFormat }} €</b></p>
+        <div class="separacion"></div>
+        <p-button label="Back" icon="pi pi-caret-left" (click)="back()"/>
+    </div>   
+</div>
+<p-toast />
+
+
